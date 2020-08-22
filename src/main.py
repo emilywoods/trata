@@ -39,37 +39,37 @@ After 4x Pomodoros, there will be a [b]long break of 15 minutes[/b].\n
 :tomato: 
 """
     )
-
     console.print(table)
 
 
-def countdown_to_begin(console: Console):
+def countdown_to_beginning(console: Console):
     console.print("Starting in:")
     seconds_until_start = 5
     while seconds_until_start > 0:
         console.print(f"{seconds_until_start}")
-        seconds_until_start = seconds_until_start - 1
+        seconds_until_start -= 1
         time.sleep(1)
 
 
-def pomodoros():
-    session(25, "Pomodoro 1")
+def focus_time(cycle_num: int = 0):
+    session(25, f"Pomodoro {cycle_num}")
 
 
-def short_break():
-    session(5, "Break 1")
+def short_break(cycle_num: int = 0):
+    session(5, f"Break {cycle_num}")
 
 
 def long_break():
-    session(15, "Long break")
+    session(15, ":coffee: :herb: [yellow]Long break[/yellow] :herb: :coffee:")
 
 
 def session(time_in_min: int, description: str):
     for n in track(
-        range(time_in_min * 60), description="[cyan]{description}[/cyan] :: In progress"
+        range(time_in_min * 60),
+        description=f"[cyan]{description}[/cyan] :: In progress",
     ):
         time.sleep(1)
-    sys.stdout.write("\a")
+    print("\a")
 
 
 def main():
@@ -78,10 +78,20 @@ def main():
     greeting_table(console)
     begin = input("Begin pomodoro session? y/n ")
     if begin is "y":
-        countdown_to_begin(console)
-        pomodoros()
-        short_break()
-        long_break()
+        countdown_to_beginning(console)
+
+        cycle_num = 1
+        while True:
+            focus_time(cycle_num)
+
+            if cycle_num % 4 == 0:
+                long_break()
+            else:
+                short_break(cycle_num)
+
+            input("Click to continue with next focus period.")
+
+            cycle_num += 1
     else:
         exit()
 
