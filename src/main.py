@@ -8,7 +8,7 @@ from rich.table import Table
 GREETING_MORNING = ":sunrise: Good morning! :sunrise:"
 GREETING_AFTERNOON = "Good afternoon :wave:"
 GREETING_EVENING = ":city_sunset: Good evening! :city_sunset:"
-GREETING_NIGHTIME = ":milky_way: Hello, Nightowl :owl:"
+GREETING_NIGHTIME = ":milky_way: :owl: Hello, Nightowl :owl: :milky_way:"
 
 
 def current_hour() -> str:
@@ -52,10 +52,21 @@ def countdown_to_begin(console: Console):
         time.sleep(1)
 
 
-def run_pomodoros(console: Console):
-    pomo_in_sec = 25 * 60
+def pomodoros():
+    session(25, "Pomodoro 1")
+
+
+def short_break():
+    session(5, "Break 1")
+
+
+def long_break():
+    session(15, "Long break")
+
+
+def session(time_in_min: int, description: str):
     for n in track(
-        range(pomo_in_sec), description="[cyan]Pomodoro 1[/cyan] :: In progress"
+        range(time_in_min * 60), description="[cyan]{description}[/cyan] :: In progress"
     ):
         time.sleep(1)
     sys.stdout.write("\a")
@@ -68,7 +79,9 @@ def main():
     begin = input("Begin pomodoro session? y/n ")
     if begin is "y":
         countdown_to_begin(console)
-        run_pomodoros(console)
+        pomodoros()
+        short_break()
+        long_break()
     else:
         exit()
 
