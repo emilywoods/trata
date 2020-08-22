@@ -2,7 +2,7 @@ import io
 import os
 import re
 
-from setuptools import find_packages, setup
+from setuptools import find_packages, setup  # type: ignore
 
 
 def read(path):
@@ -20,11 +20,9 @@ setup(
     packages=["src"],
     namespace_packages=["src"],
     entry_points={"console_scripts": ["tratai = src.main:main"]},
-    install_requires=[
-        "rich==3.3.2"
-    ],
+    install_requires=["rich==3.3.2"],
     extras_require={
-        "testing": ["black==18.9b0", "flake8==3.7.7", "mypy==0.670", "isort==4.3.15"]
+        "test": ["black==18.9b0", "flake8==3.7.7", "mypy==0.782", "isort==5.4.2"]
     },
     python_requires=">=3.6",
     classifiers=[

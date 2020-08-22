@@ -1,5 +1,6 @@
 from rich.console import Console
 
+
 def main():
     console = Console()
     console.print(":tomato:")
