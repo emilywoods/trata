@@ -3,15 +3,13 @@
 .PHONY: install
 install:
 	python3 -m venv .venv
-	. .venv/bin/activate
-	pip3 install -e .
+	.venv/bin/pip3 install -e .
 
 
 .PHONY: install_test
 install_test:
 	python3 -m venv .venv
-	. .venv/bin/activate
-	pip3 install -e ".[test]"
+	.venv/bin/pip3 install -e ".[test]"
 
 .PHONY: fmt
 fmt: install_test

@@ -1,6 +1,7 @@
 import sys
 import time
 
+import click
 from rich.console import Console
 from rich.progress import track
 from rich.table import Table
@@ -28,14 +29,16 @@ def greeting() -> str:
         return GREETING_NIGHTIME
 
 
-def greeting_table(console: Console):
+def greeting_table(
+    console: Console, focus_time: int, break_short_time: int, break_long_time: int
+):
     table = Table(show_header=True, header_style="bold green")
     table.add_column(greeting(), style="dim", justify="center")
     table.add_row(
-        """
-Today we'll do Pomodoros for [b]25 minutes[/b]. \n
-There will be [b]short 5 minute breaks [/b]in between each one.\n
-After 4x Pomodoros, there will be a [b]long break of 15 minutes[/b].\n
+        f"""
+Today we'll focus for [b]{focus_time} minute[/b] intervals. \n
+There will be [b]short {break_short_time} minute breaks [/b]in between each focus period.\n
+After 4x Pomodoros, there will be a [b]long break of {break_long_time} minutes[/b].\n
 :tomato: 
 """
     )
@@ -51,16 +54,16 @@ def countdown_to_beginning(console: Console):
         time.sleep(1)
 
 
-def focus_time(cycle_num: int = 0):
-    session(25, f"Pomodoro {cycle_num}")
+def focus_time(time_in_min: int, cycle_num: int = 0):
+    session(time_in_min, f"Pomodoro {cycle_num}")
 
 
-def short_break(cycle_num: int = 0):
-    session(5, f"Break {cycle_num}")
+def short_break(time_in_min: int, cycle_num: int = 0):
+    session(time_in_min, f"Break {cycle_num}")
 
 
-def long_break():
-    session(15, ":coffee: :herb: [yellow]Long break[/yellow] :herb: :coffee:")
+def long_break(time_in_min: int):
+    session(time_in_min, ":coffee: :herb: [yellow]Long break[/yellow] :herb: :coffee:")
 
 
 def session(time_in_min: int, description: str):
@@ -72,22 +75,38 @@ def session(time_in_min: int, description: str):
     print("\a")
 
 
-def main():
+@click.command()
+@click.option(
+    "--focus", default=25, help="Duration of time for focus, in minutes", type=click.INT
+)
+@click.option(
+    "--break-short",
+    default=5,
+    help="Duration of time for short break, in minutes",
+    type=click.INT,
+)
+@click.option(
+    "--break-long",
+    default=15,
+    help="Duration of time for long break, in minutes",
+    type=click.INT,
+)
+def main(focus: int, break_short: int, break_long: int):
     console = Console()
 
-    greeting_table(console)
+    greeting_table(console, focus, break_short, break_long)
     begin = input("Begin pomodoro session? y/n ")
     if begin is "y":
         countdown_to_beginning(console)
 
         cycle_num = 1
         while True:
-            focus_time(cycle_num)
+            focus_time(focus, cycle_num)
 
             if cycle_num % 4 == 0:
-                long_break()
+                long_break(break_long)
             else:
-                short_break(cycle_num)
+                short_break(break_short, cycle_num)
 
             input("Click to continue with next focus period.")
 

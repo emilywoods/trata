@@ -20,7 +20,7 @@ setup(
     packages=["src"],
     namespace_packages=["src"],
     entry_points={"console_scripts": ["tratai = src.main:main"]},
-    install_requires=["rich==3.3.2"],
+    install_requires=["rich==3.3.2", "click==7.1.2"],
     extras_require={
         "test": ["black==18.9b0", "flake8==3.7.7", "mypy==0.782", "isort==5.4.2"]
     },
