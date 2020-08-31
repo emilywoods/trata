@@ -94,25 +94,30 @@ def session(time_in_min: int, description: str):
 def main(focus: int, break_short: int, break_long: int):
     console = Console()
 
-    greeting_table(console, focus, break_short, break_long)
-    begin = input("Begin pomodoro session? y/n ")
-    if begin is "y":
-        countdown_to_beginning(console)
+    try:
 
-        cycle_num = 1
-        while True:
-            focus_time(focus, cycle_num)
+        greeting_table(console, focus, break_short, break_long)
+        begin = input("Begin pomodoro session? y/n ")
+        if begin is "y":
+            countdown_to_beginning(console)
 
-            if cycle_num % 4 == 0:
-                long_break(break_long)
-            else:
-                short_break(break_short, cycle_num)
+            cycle_num = 1
+            while True:
+                focus_time(focus, cycle_num)
 
-            input("Click to continue with next focus period.")
+                if cycle_num % 4 == 0:
+                    long_break(break_long)
+                else:
+                    short_break(break_short, cycle_num)
 
-            cycle_num += 1
-    else:
-        exit()
+                input("Click to continue with next focus period.")
+
+                cycle_num += 1
+        else:
+            exit()
+
+    except (KeyboardInterrupt, SystemExit):
+        print("Exitting program. Goodbye!")
 
 
 if __name__ == "__main__":
