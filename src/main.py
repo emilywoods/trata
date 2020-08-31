@@ -5,6 +5,7 @@ import click
 from rich.console import Console
 from rich.progress import track
 from rich.table import Table
+from time import gmtime, strftime
 
 GREETING_MORNING = ":sunrise: Good morning! :sunrise:"
 GREETING_AFTERNOON = "Good afternoon :wave:"
@@ -67,9 +68,11 @@ def long_break(time_in_min: int):
 
 
 def session(time_in_min: int, description: str):
+    start_time =  strftime("%H:%M", gmtime())
+
     for n in track(
         range(time_in_min * 60),
-        description=f"[cyan]{description}[/cyan] :: In progress",
+        description=f"[cyan]{description}[/cyan] Start time :: {start_time} ",
     ):
         time.sleep(1)
     print("\a")
