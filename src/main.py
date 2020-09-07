@@ -5,7 +5,7 @@ import click
 from rich.console import Console
 from rich.progress import track
 from rich.table import Table
-from time import gmtime, strftime
+from time import localtime, strftime
 
 GREETING_MORNING = ":sunrise: Good morning! :sunrise:"
 GREETING_AFTERNOON = "Good afternoon :wave:"
@@ -20,11 +20,11 @@ def current_hour() -> str:
 def greeting() -> str:
     hour = current_hour()
 
-    if 5 < hour < 12:
+    if 5 < hour <= 12:
         return GREETING_MORNING
-    elif 12 < hour < 17:
+    elif 12 < hour <= 16:
         return GREETING_AFTERNOON
-    elif 17 < hour < 23:
+    elif 16 < hour <= 21:
         return GREETING_EVENING
     else:
         return GREETING_NIGHTIME
@@ -68,7 +68,7 @@ def long_break(time_in_min: int):
 
 
 def session(time_in_min: int, description: str):
-    start_time =  strftime("%H:%M", gmtime())
+    start_time =  strftime("%H:%M", localtime())
 
     for n in track(
         range(time_in_min * 60),
