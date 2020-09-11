@@ -1,11 +1,11 @@
 import sys
 import time
+from time import localtime, strftime
 
 import click
 from rich.console import Console
 from rich.progress import track
 from rich.table import Table
-from time import localtime, strftime
 
 GREETING_MORNING = ":sunrise: Good morning! :sunrise:"
 GREETING_AFTERNOON = "Good afternoon :wave:"
@@ -68,7 +68,7 @@ def long_break(time_in_min: int):
 
 
 def session(time_in_min: int, description: str):
-    start_time =  strftime("%H:%M", localtime())
+    start_time = strftime("%H:%M", localtime())
 
     for n in track(
         range(time_in_min * 60),
@@ -100,8 +100,8 @@ def main(focus: int, break_short: int, break_long: int):
     try:
 
         greeting_table(console, focus, break_short, break_long)
-        begin = input("Begin pomodoro session? y/n ")
-        if begin is "y":
+        user_input = input("Begin pomodoro session? y/n ")
+        if user_input is "y":
             countdown_to_beginning(console)
 
             cycle_num = 1
@@ -120,7 +120,7 @@ def main(focus: int, break_short: int, break_long: int):
             exit()
 
     except (KeyboardInterrupt, SystemExit):
-        print("Exitting program. Goodbye!")
+        print("Exiting program. Goodbye!")
 
 
 if __name__ == "__main__":
